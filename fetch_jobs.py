@@ -50,6 +50,7 @@ def years(t):
     return min(m) if m else None
 
 def main():
+    os.makedirs("docs", exist_ok=True)
     prev = {}
     if os.path.exists("docs/jobs.json"):
         prev = {j["url"]: j for j in json.load(open("docs/jobs.json"))["jobs"]}
