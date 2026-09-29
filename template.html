@@ -1,0 +1,35 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Job Feed</title><style>
+body{font:14px/1.5 Arial,sans-serif;margin:0;background:#f4f6fa;color:#1a1a1a}
+header{background:#1f3864;color:#fff;padding:14px 20px}header small{opacity:.8}
+.bar{display:flex;flex-wrap:wrap;gap:8px;padding:12px 20px;background:#fff;border-bottom:1px solid #ddd}
+.bar input,.bar select{padding:6px 8px;border:1px solid #bbb;border-radius:6px}
+main{max-width:900px;margin:0 auto;padding:16px}
+.card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px 14px;margin-bottom:10px}
+.card h3{margin:0 0 2px;font-size:15px}.card a{color:#0563c1;text-decoration:none}
+.meta{color:#555;font-size:13px}.tag{display:inline-block;background:#e8eefc;border-radius:10px;padding:1px 8px;margin:4px 4px 0 0;font-size:12px}
+.new{background:#c6efce}.ph{background:#ffe8b3}.btns button{margin:6px 6px 0 0;padding:3px 10px;border:1px solid #bbb;border-radius:6px;background:#fff;cursor:pointer}
+.btns .on{background:#1f3864;color:#fff}
+</style></head><body>
+<header><b>My Job Feed</b> &nbsp;<small id="upd"></small></header>
+<div class="bar"><input id="q" placeholder="Search title/company"><select id="reg"><option value="">All regions</option></select>
+<label><input type="checkbox" id="ph"> Pharma/healthcare only</label>
+<select id="st"><option value="">Hide ignored</option><option value="all">Show all</option><option>Saved</option><option>Applied</option><option>Ignored</option></select>
+<span id="cnt"></span></div><main id="list"></main>
+<script>
+const D=__DATA__;const S=JSON.parse(localStorage.getItem("jobstate")||"{}");
+const $=id=>document.getElementById(id);$("upd").textContent="Updated "+D.updated;
+[...new Set(D.jobs.map(j=>j.region))].forEach(r=>$("reg").add(new Option(r,r)));
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function render(){const q=$("q").value.toLowerCase(),st=$("st").value;
+const L=D.jobs.filter(j=>(!q||(j.title+j.company).toLowerCase().includes(q))&&(!$("reg").value||j.region==$("reg").value)&&(!$("ph").checked||j.pharma)
+&&(st=="all"||(st?S[j.url]==st:S[j.url]!="Ignored")));
+$("cnt").textContent=L.length+" jobs";
+$("list").innerHTML=L.map((j,i)=>`<div class="card"><h3><a href="${esc(j.url)}" target="_blank" rel="noopener">${esc(j.title)}</a></h3>
+<div class="meta">${esc(j.company)} · ${esc(j.location)} · ${esc(j.region)} · posted ${esc(j.date)}${j.years?` · asks ~${j.years}+ yrs`:""}</div>
+${j.first_seen>=D.updated?'<span class="tag new">New today</span>':""}${j.pharma?'<span class="tag ph">Pharma/health</span>':""}${j.skills.map(s=>`<span class="tag">${esc(s)}</span>`).join("")}
+<div class="meta">${esc(j.text)}...</div><div class="btns">${["Saved","Applied","Ignored"].map(s=>`<button class="${S[j.url]==s?"on":""}" data-u="${esc(j.url)}" data-s="${s}">${s}</button>`).join("")}</div></div>`).join("")||"<p>No jobs match.</p>"}
+document.addEventListener("click",e=>{const b=e.target.closest("button[data-u]");if(!b)return;const u=b.dataset.u;
+S[u]=S[u]==b.dataset.s?"":b.dataset.s;localStorage.setItem("jobstate",JSON.stringify(S));render()});
+["q","reg","ph","st"].forEach(i=>$(i).addEventListener("input",render));render();
+</script></body></html>

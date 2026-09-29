@@ -1,0 +1,11 @@
+{
+  "queries": ["data engineer snowflake", "data engineer pyspark", "data engineer airflow", "etl developer snowflake"],
+  "countries": {"in": "", "us": "remote", "gb": "remote"},
+  "max_days_old": 14,
+  "max_years": 5,
+  "title_terms": ["data engineer", "etl", "analytics engineer", "data platform", "big data", "snowflake", "pyspark", "data developer"],
+  "skills": ["snowflake", "pyspark", "spark", "airflow", "python", "sql", "aws", "glue", "databricks", "azure data factory", "dbt", "tableau", "etl", "data modeling", "snowpark", "mdm"],
+  "pharma_terms": ["pharma", "life science", "biotech", "clinical", "healthcare", "iqvia", "veeva", "novartis", "pfizer", "astrazeneca", "sanofi", "gsk", "merck", "lilly", "abbvie", "roche", "takeda", "bayer", "zs associates", "indegene", "tiger analytics", "axtria", "commercial analytics", "payer", "patient"],
+  "greenhouse": [],
+  "lever": []
+}
