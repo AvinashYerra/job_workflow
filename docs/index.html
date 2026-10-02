@@ -17,7 +17,7 @@ main{max-width:900px;margin:0 auto;padding:16px}
 <select id="st"><option value="">Hide ignored</option><option value="all">Show all</option><option>Saved</option><option>Applied</option><option>Ignored</option></select>
 <span id="cnt"></span></div><main id="list"></main>
 <script>
-const D={"updated": "2026-10-01", "jobs": []};const S=JSON.parse(localStorage.getItem("jobstate")||"{}");
+const D={"updated": "2026-10-02", "jobs": []};const S=JSON.parse(localStorage.getItem("jobstate")||"{}");
 const $=id=>document.getElementById(id);$("upd").textContent="Updated "+D.updated;
 [...new Set(D.jobs.map(j=>j.region))].forEach(r=>$("reg").add(new Option(r,r)));
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
